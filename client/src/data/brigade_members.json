@@ -1,0 +1,35 @@
+[
+  {
+    "identification": "171819164-5",
+    "name": "José",
+    "last": "Montero",
+    "phone_no": "0987654321",
+    "email": "josé@email.com",
+    "address": "Quito Av. Algo E13-110",
+    "gender": "hombre",
+    "sector": "B3",
+    "avatar": ""
+  },
+  {
+    "identification": "999999999-9",
+    "name": "Algún",
+    "last": "Otro",
+    "phone_no": "0987123456",
+    "email": "alguien@email.com",
+    "address": "Quito Calle Otra Oe10-109",
+    "gender": "hombre",
+    "sector": "C7",
+    "avatar": ""
+  },
+  {
+    "identification": "010203045-6",
+    "name": "Otra",
+    "last": "Persona",
+    "phone_no": "0918468752",
+    "email": "otra@otro-mail.com",
+    "address": "Quito Av. Ninguna N02-050",
+    "gender": "mujer",
+    "sector": "A0",
+    "avatar": ""
+  }
+]

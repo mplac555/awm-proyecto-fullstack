@@ -1,0 +1,44 @@
+[
+  {
+    "identification": "17507311550",
+    "name": "Jeremy",
+    "last": "Peralbo",
+    "vehicles": [
+      {
+        "make": "Chevrolet",
+        "model": "Aveo",
+        "plate_no": "PC501",
+        "color": "Negro",
+        "qr_code": ""
+      },
+      {
+        "make": "Kía",
+        "model": "Sportage",
+        "plate_no": "GY5023",
+        "color": "Rojo",
+        "qr_code": ""
+      }
+    ]
+  },
+  {
+    "identification": "5151845152",
+    "name": "Marcelo",
+    "last": "Placencia",
+    "vehicles": [
+      {
+        "make": "Nissan",
+        "model": "Sentra",
+        "plate_no": "SDV505",
+        "color": "Plateado",
+        "qr_code": ""
+      },
+      {
+        "make": "Volkswagen",
+        "model": "Santana",
+        "plate_no": "TYN654",
+        "color": "Verde",
+        "qr_code": ""
+      }
+    ]
+  }
+]

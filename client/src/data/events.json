@@ -1,0 +1,26 @@
+[
+  {
+    "date_time": "2023-05-21 04:30:54",
+    "brig_member_id": "",
+    "plate_no": "PC5079",
+    "incident_type": "Ninguno",
+    "description": "No",
+    "image": ""
+  },
+  {
+    "date_time": "2023-05-18 23:45:00",
+    "brig_member_id": "",
+    "plate_no": "GY0056",
+    "incident_type": "Suplantado",
+    "description": "Sí",
+    "image": ""
+  },
+  {
+    "date_time": "2023-05-18 12:45:30",
+    "brig_member_id": "",
+    "plate_no": "HO6347",
+    "incident_type": "No Registrado",
+    "description": "Sí",
+    "image": ""
+  }
+]
