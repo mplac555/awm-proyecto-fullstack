@@ -1,22 +1,55 @@
-import React, { useState } from 'react';
-import { TextField, Button, Grid } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // Importamos useNavigate
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { TextField, Button, Grid } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom"; // Importamos useNavigate
+import axios from "axios";
+import ListManager from "../../modules/ListManager";
 
-const BASE_API_URL = 'http://localhost:8000/api';
+const BASE_API_URL = "http://localhost:8000/api";
 
-const AdminForm = () => {
+const AdminForm = ({ list }) => {
   const navigate = useNavigate();
+  const { id: adminID } = useParams();
 
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
   const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    cedula: '',
-    telefono: '',
-    correo: '',
-    password: '',
-    confirmarPassword: '',
+    nombre: "",
+    apellido: "",
+    cedula: "",
+    telefono: "",
+    correo: "",
+    password: "",
+    confirmarPassword: "",
   });
+
+  useEffect(() => {
+    if (!adminID) {
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    axios
+      .get(`${BASE_API_URL}/admin/${adminID}`)
+      .then((res) => {
+        setFormData({
+          id: res.data._id,
+          nombre: res.data.adminName,
+          apellido: res.data.adminLastname,
+          cedula: res.data.adminDNI,
+          telefono: res.data.adminPhone,
+          correo: res.data.adminMail,
+          password: res.data.adminPassword,
+          confirmarPassword: res.data.adminPassword,
+        });
+        setLoading(false);
+      })
+      .catch((err) => {
+        setFetchError(
+          `Existió algún error al guardar los nuevos datos (${err}).`
+        );
+        setLoading(false);
+      });
+  }, [adminID]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,24 +71,46 @@ const AdminForm = () => {
     };
 
     try {
-      await axios.post(`${BASE_API_URL}/admin/new`, formattedData);
-      navigate('/administradores'); // Utilizamos navigate para redirigir a la interfaz principal
+      if (adminID) {
+        let nuevoAdmin = await axios.put(
+          `${BASE_API_URL}/admin/${formData.id}`,
+          {
+            _id: formData.id,
+            ...formattedData,
+          }
+        );
+        ListManager.editElement(list, nuevoAdmin.data);
+      } else {
+        let nuevoAdmin = await axios.post(
+          `${BASE_API_URL}/admin/new`,
+          formattedData
+        );
+        ListManager.add(list, nuevoAdmin.data);
+      }
+      navigate("/administradores"); // Utilizamos navigate para redirigir a la interfaz principal
     } catch (error) {
-      console.error('Error adding admin:', error);
+      console.error("Error adding admin:", error);
     }
   };
 
   const isEmailValid = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    return email === "" || emailRegex.test(email);
   };
 
   const isPasswordMatch = () => {
-    return formData.password === formData.confirmarPassword;
+    return (
+      formData.confirmarPassword === "" ||
+      formData.password === formData.confirmarPassword
+    );
   };
 
   const isNameValid = (name) => {
-    return name.length >= 4 && name.length <= 10;
+    return name === "" || (name.length >= 4 && name.length <= 10);
+  };
+
+  const isLastNameValid = (lastName) => {
+    return lastName === "" || (lastName.length >= 4 && lastName.length <= 10);
   };
 
   const isNumeric = (value) => {
@@ -63,12 +118,17 @@ const AdminForm = () => {
   };
 
   const isCedulaValid = (cedula) => {
-    return cedula.length === 10 && isNumeric(cedula);
+    return cedula === "" || (`${cedula}`.length === 10 && isNumeric(cedula));
   };
 
   const isTelefonoValid = (telefono) => {
-    return telefono.length === 10 && isNumeric(telefono);
+    return (
+      telefono === "" || (`${telefono}`.length === 10 && isNumeric(telefono))
+    );
   };
+
+  if (loading) return <h3>Cargando información...</h3>;
+  if (fetchError) return <h3>{fetchError}</h3>;
 
   return (
     <form onSubmit={handleSubmit}>
@@ -81,12 +141,12 @@ const AdminForm = () => {
             variant="outlined"
             fullWidth
             required
-            value={formData.nombre}
+            value={formData.nombre || ""}
             onChange={handleChange}
             error={!isNameValid(formData.nombre)}
             helperText={
               !isNameValid(formData.nombre) &&
-              'El nombre debe tener entre 4 y 10 caracteres.'
+              "El nombre debe tener entre 4 y 10 caracteres."
             }
           />
         </Grid>
@@ -97,12 +157,12 @@ const AdminForm = () => {
             variant="outlined"
             fullWidth
             required
-            value={formData.apellido}
+            value={formData.apellido || ""}
             onChange={handleChange}
-            error={!isNameValid(formData.apellido)}
+            error={!isLastNameValid(formData.apellido)}
             helperText={
-              !isNameValid(formData.apellido) &&
-              'El apellido debe tener entre 4 y 10 caracteres.'
+              !isLastNameValid(formData.apellido) &&
+              "El apellido debe tener entre 4 y 10 caracteres."
             }
           />
         </Grid>
@@ -111,19 +171,20 @@ const AdminForm = () => {
             name="cedula"
             label="Cédula de Identidad"
             variant="outlined"
+            type="number"
             fullWidth
             required
             inputProps={{
               minLength: 10,
               maxLength: 10,
-              pattern: '[0-9]+',
+              pattern: "[0-9]+",
             }}
-            value={formData.cedula}
+            value={formData.cedula || ""}
             onChange={handleChange}
             error={!isCedulaValid(formData.cedula)}
             helperText={
               !isCedulaValid(formData.cedula) &&
-              'Ingresa una cédula válida de 10 dígitos numéricos.'
+              "Ingresa una cédula válida de 10 dígitos numéricos."
             }
           />
         </Grid>
@@ -132,19 +193,20 @@ const AdminForm = () => {
             name="telefono"
             label="Teléfono"
             variant="outlined"
+            type="number"
             fullWidth
             required
             inputProps={{
               minLength: 10,
               maxLength: 10,
-              pattern: '[0-9]+',
+              pattern: "[0-9]+",
             }}
-            value={formData.telefono}
+            value={formData.telefono || ""}
             onChange={handleChange}
             error={!isTelefonoValid(formData.telefono)}
             helperText={
               !isTelefonoValid(formData.telefono) &&
-              'Ingresa un número de teléfono válido de 10 dígitos numéricos.'
+              "Ingresa un número de teléfono válido de 10 dígitos numéricos."
             }
           />
         </Grid>
@@ -155,12 +217,12 @@ const AdminForm = () => {
             variant="outlined"
             fullWidth
             required
-            value={formData.correo}
+            value={formData.correo || ""}
             onChange={handleChange}
             error={!isEmailValid(formData.correo)}
             helperText={
               !isEmailValid(formData.correo) &&
-              'Ingresa un correo electrónico válido.'
+              "Ingresa un correo electrónico válido."
             }
           />
         </Grid>
@@ -172,7 +234,7 @@ const AdminForm = () => {
             variant="outlined"
             fullWidth
             required
-            value={formData.password}
+            value={formData.password || ""}
             onChange={handleChange}
           />
         </Grid>
@@ -184,12 +246,10 @@ const AdminForm = () => {
             variant="outlined"
             fullWidth
             required
-            value={formData.confirmarPassword}
+            value={formData.confirmarPassword || ""}
             onChange={handleChange}
             error={!isPasswordMatch()}
-            helperText={
-              !isPasswordMatch() && 'Las contraseñas no coinciden.'
-            }
+            helperText={!isPasswordMatch() && "Las contraseñas no coinciden."}
           />
         </Grid>
         <Grid item xs={6}>
@@ -197,13 +257,24 @@ const AdminForm = () => {
             type="submit"
             variant="contained"
             color="primary"
-            disabled={!isPasswordMatch() || !isNameValid(formData.nombre) || !isNameValid(formData.apellido) || !isEmailValid(formData.correo) || !isCedulaValid(formData.cedula) || !isTelefonoValid(formData.telefono)}
+            disabled={
+              !isPasswordMatch() ||
+              !isNameValid(formData.nombre) ||
+              !isNameValid(formData.apellido) ||
+              !isEmailValid(formData.correo) ||
+              !isCedulaValid(formData.cedula) ||
+              !isTelefonoValid(formData.telefono)
+            }
           >
             Guardar
           </Button>
         </Grid>
         <Grid item xs={6}>
-          <Button variant="contained" color="secondary" onClick={() => navigate('/administradores')}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => navigate("/administradores")}
+          >
             Cancelar
           </Button>
         </Grid>

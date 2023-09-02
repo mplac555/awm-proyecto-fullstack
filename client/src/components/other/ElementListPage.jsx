@@ -14,6 +14,7 @@ export default function ElementListPage({
   fields,
   searchPlaceHolder,
   name,
+  deleteHandler,
   secondaryFieldName,
   secondaryFields,
   secondaryName,
@@ -66,7 +67,8 @@ export default function ElementListPage({
           className="table"
           columns={fields}
           rows={list}
-          deleteRowHandler={ListManager.deleteElement}
+          // deleteRowHandler={ListManager.deleteElement}
+          deleteRowHandler={deleteHandler}
           name={name || "Elemento"}
           query={query}
           setCurrentSelection={secondaryFields && setCurrent}

@@ -221,6 +221,7 @@ export default function Tabla({
   // also calls the handler given by parent through props.
   function deleteElement() {
     deleteRowHandler(rows, selected);
+    // deleteRowHandler(selected);
     forceUpdate();
     setSelected([]);
   }
@@ -339,15 +340,15 @@ export default function Tabla({
     // in the searchbar (external component) and sent through props;
     // it also takes the correct number of rows to show per page.
     return list
-    .filter((row) =>
-      columns
-        .map((col) =>
-          String(row[col.id]).toLowerCase().includes(query.toLowerCase())
-        )
-        .includes(true)
-    )
-    .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-    .sort(getComparator(order, orderBy));
+      .filter((row) =>
+        columns
+          .map((col) =>
+            String(row[col.id]).toLowerCase().includes(query.toLowerCase())
+          )
+          .includes(true)
+      )
+      .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+      .sort(getComparator(order, orderBy));
   }, [order, orderBy, page, rowsPerPage, ignored, query, rows, dateFilter]);
 
   return (
@@ -376,43 +377,43 @@ export default function Tabla({
             />
             {/*TABLE BODY*/}
             <TableBody>
-            {/* FILLED ROWS */}
-            {visibleRows.map((row) => {
-              const isRowSelected = isSelected(row._id);
-              return (
-                <TableRow
-                  key={row._id}
-                  hover
-                  onClick={() => handleRowClick(row._id)}
-                  role="checkbox"
-                  tabIndex={-1}
-                  selected={isRowSelected}
-                  sx={{ cursor: "pointer" }}
-                >
-                  <TableCell padding="checkbox">
-                    <Checkbox checked={isRowSelected} />
-                  </TableCell>
-                  {columns.map((column) => (
-                    <TableCell key={column.id} align="center">
-                      {column.id === "genre"
-                        ? genreOptions[row.genre]
-                        : row[column.id]}
+              {/* FILLED ROWS */}
+              {visibleRows.map((row) => {
+                const isRowSelected = isSelected(row._id);
+                return (
+                  <TableRow
+                    key={row._id}
+                    hover
+                    onClick={() => handleRowClick(row._id)}
+                    role="checkbox"
+                    tabIndex={-1}
+                    selected={isRowSelected}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    <TableCell padding="checkbox">
+                      <Checkbox checked={isRowSelected} />
                     </TableCell>
-                  ))}
+                    {columns.map((column) => (
+                      <TableCell key={column.id} align="center">
+                        {column.id === "genre"
+                          ? genreOptions[row.genre]
+                          : row[column.id]}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })}
+              {/* EMPTY ROWS */}
+              {emptyRows > 0 && (
+                <TableRow
+                  style={{
+                    height: 53 * emptyRows,
+                  }}
+                >
+                  <TableCell colSpan={columns.length + 1} />
                 </TableRow>
-              );
-            })}
-            {/* EMPTY ROWS */}
-            {emptyRows > 0 && (
-              <TableRow
-                style={{
-                  height: 53 * emptyRows,
-                }}
-              >
-                <TableCell colSpan={columns.length + 1} />
-              </TableRow>
-            )}
-          </TableBody>
+              )}
+            </TableBody>
           </Table>
         </TableContainer>
 
