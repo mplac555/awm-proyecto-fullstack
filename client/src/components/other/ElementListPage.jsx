@@ -25,6 +25,7 @@ export default function ElementListPage({
   dateFilter,
   updateSecondary,
   secondaryDeleteHandler,
+  readOnly,
 }) {
   const [query, setQuery] = useState("");
   const [secondaryList, setSecondaryList] = useState([]);
@@ -104,6 +105,7 @@ export default function ElementListPage({
           setCurrentSelection={secondaryFields && setCurrent}
           dateFilter={dateFilter && momentFiltering}
           singleRowSelection={secondaryFields && true}
+          readOnly={!!readOnly}
         />
 
         {/*OPTIONAL PRIMARY TABLE (disabled by default)*/}
