@@ -7,7 +7,7 @@ import { Tab, Tabs } from "@mui/material";
 // Possible urls, respectively associated to a selected tab in the navigation bar
 const tabs = [
   "/",
-  "/vehiculos",
+  "/propietarios",
   "/brigadistas",
   "/administradores",
   "/historial",
@@ -30,7 +30,11 @@ export default function NavBar() {
       textColor="inherit"
     >
       <Tab component={Link} to={"/"} label="Inicio" />
-      <Tab component={Link} to={"vehiculos"} label="Información de Vehículos" />
+      <Tab
+        component={Link}
+        to={"propietarios"}
+        label="Información de Vehículos"
+      />
       <Tab
         component={Link}
         to={"brigadistas"}

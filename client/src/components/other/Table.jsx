@@ -2,6 +2,7 @@
 import React, { useState, useMemo, useReducer } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { genreOptions } from "../../data/BrigMembersData";
+const moment = require("moment");
 // IMPORTS: components
 import {
   Box,
@@ -21,7 +22,13 @@ import {
   Typography,
 } from "@mui/material";
 // IMPORTS: icons
-import { Edit, Delete, FilterList, PersonAdd } from "@mui/icons-material";
+import {
+  Edit,
+  Delete,
+  FilterList,
+  PersonAdd,
+  FindInPageOutlined,
+} from "@mui/icons-material";
 // IMPORTS: styles and lacale
 import { alpha, createTheme, ThemeProvider } from "@mui/material/styles";
 import { esES } from "@mui/material/locale";
@@ -57,7 +64,16 @@ function getComparator(order, orderBy) {
 // Toolbar that sits on top of the actual table:
 // it contains auxiliary information related to the table,
 // as well as some controls (buttons)
-function TableToolbar({ numSelected, deleteHandler, editHandler, name, path }) {
+function TableToolbar({
+  numSelected,
+  deleteHandler,
+  editHandler,
+  detailsHandler,
+  name,
+  path,
+  secondaryDisabled,
+  readOnly,
+}) {
   // Buttons located at the far right of the toolbar:
   // these buttons are dynamically displayed, depending
   // on the number of currently selected rows, cycling
@@ -84,18 +100,27 @@ function TableToolbar({ numSelected, deleteHandler, editHandler, name, path }) {
       </IconButton>
     </Tooltip>
   );
+  let detailsButton = (
+    <Tooltip title="Ver Detalles">
+      <IconButton onClick={detailsHandler}>
+        <FindInPageOutlined />
+      </IconButton>
+    </Tooltip>
+  );
   if (numSelected > 1) {
     toolbarButtons = deleteButton;
   } else if (numSelected > 0) {
     toolbarButtons = (
       <>
-        {editButton}
+        {readOnly ? detailsButton : editButton}
         {deleteButton}
       </>
     );
   } else {
     toolbarButtons = filterButton;
   }
+
+  // console.log("Tabla | Toolbar | secondaryDisabled", secondaryDisabled);
 
   return (
     <Toolbar
@@ -128,14 +153,16 @@ function TableToolbar({ numSelected, deleteHandler, editHandler, name, path }) {
             {name}s
           </Typography>
           {/*ADD ELEMENT BUTTON*/}
-          <Tooltip title={`Agregar Nuevo ${name}`}>
-            <IconButton
-              component={Link}
-              to={path ? `${path}/agregar` : "agregar"}
-            >
-              <PersonAdd />
-            </IconButton>
-          </Tooltip>
+          {!(secondaryDisabled || readOnly) && (
+            <Tooltip title={`Agregar Nuevo ${name}`}>
+              <IconButton
+                component={Link}
+                to={path ? `${path}/agregar` : "agregar"}
+              >
+                <PersonAdd />
+              </IconButton>
+            </Tooltip>
+          )}
         </>
       )}
       {/*OPTIONAL BUTTONS*/}
@@ -154,6 +181,7 @@ function Cabecera(props) {
     selectedRowsCount,
     rowsCount,
     onRequestSort,
+    singleRowSelection,
   } = props;
 
   // This function creates and returns another function, an ordering
@@ -167,14 +195,16 @@ function Cabecera(props) {
       <TableRow>
         {/*FIRST COLUMN: SELECT ALL*/}
         <TableCell className="check" padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={
-              selectedRowsCount > 0 && selectedRowsCount < rowsCount
-            }
-            checked={selectedRowsCount === rowsCount && rowsCount > 0}
-            onChange={onSelectAllClick}
-          />
+          {!singleRowSelection && (
+            <Checkbox
+              color="primary"
+              indeterminate={
+                selectedRowsCount > 0 && selectedRowsCount < rowsCount
+              }
+              checked={selectedRowsCount === rowsCount && rowsCount > 0}
+              onChange={onSelectAllClick}
+            />
+          )}
         </TableCell>
         {/*REST OF COLUMNS*/}
         {columns.map((column) => (
@@ -207,6 +237,9 @@ export default function Tabla({
   setCurrentSelection,
   dateFilter,
   path,
+  singleRowSelection,
+  secondaryDisabled,
+  readOnly,
 }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("id");
@@ -214,6 +247,8 @@ export default function Tabla({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
+
+  // console.log("Tabla | readOnly", readOnly);
 
   const navigate = useNavigate();
 
@@ -232,6 +267,12 @@ export default function Tabla({
     navigate(path ? `${path}/editar/${selected[0]}` : `editar/${selected[0]}`);
   }
 
+  function seeElementDetails() {
+    navigate(
+      path ? `${path}/detalles/${selected[0]}` : `detalles/${selected[0]}`
+    );
+  }
+
   // This function handles the sorting, each time it changes by clicking
   // on a Head Cell:
   const handleRequestSort = (property) => {
@@ -243,11 +284,11 @@ export default function Tabla({
   // This function handles the functionality of the select-all checkbox:
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
+      const newSelected = rows.map((n) => n._id);
       setSelected(newSelected);
       if (setCurrentSelection)
         setCurrentSelection(
-          newSelected.map((id) => rows.find((f) => f.id === id))
+          newSelected.map((id) => rows.find((f) => f._id === id))
         );
       return;
     }
@@ -261,24 +302,30 @@ export default function Tabla({
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
+    if (singleRowSelection) {
+      newSelected = selectedIndex !== -1 ? [] : [id];
+    } else {
+      if (selectedIndex === -1) {
+        newSelected = newSelected.concat(selected, id);
+      } else if (selectedIndex === 0) {
+        newSelected = newSelected.concat(selected.slice(1));
+      } else if (selectedIndex === selected.length - 1) {
+        newSelected = newSelected.concat(selected.slice(0, -1));
+      } else if (selectedIndex > 0) {
+        newSelected = newSelected.concat(
+          selected.slice(0, selectedIndex),
+          selected.slice(selectedIndex + 1)
+        );
+      }
     }
+
+    // console.log("Tabla | handleRowClick | newSelected", newSelected);
 
     setSelected(newSelected);
     // if (setCurrentSelection) setCurrentSelection(newSelected);
     if (setCurrentSelection)
       setCurrentSelection(
-        newSelected.map((id) => rows.find((f) => f.id === id))
+        newSelected.map((id) => rows.find((f) => f._id === id))
       );
   };
 
@@ -332,9 +379,14 @@ export default function Tabla({
     // If the dateFilter is given through props, this filters
     // the rows that are inside this filter.
     if (dateFilter)
-      list = list.filter((row) =>
-        row.datetime.isBetween(dateFilter.start, dateFilter.end)
-      );
+      list = list.filter((row) => {
+        // return row.datetime?.isBetween(dateFilter.start, dateFilter.end);
+        let datetime = moment(
+          `${row.alertaDate} ${row.alertaHour}`,
+          "YYYY-MM-DD HH:mm:ss"
+        );
+        return datetime.isBetween(dateFilter.start, dateFilter.end);
+      });
 
     // This part filters the rows depending on the query generated
     // in the searchbar (external component) and sent through props;
@@ -359,8 +411,11 @@ export default function Tabla({
           numSelected={selected.length}
           deleteHandler={deleteElement}
           editHandler={editElement}
+          detailsHandler={seeElementDetails}
           name={name}
           path={path}
+          secondaryDisabled={secondaryDisabled}
+          readOnly={readOnly}
         />
         <TableContainer>
           {/*ACTUAL TABLE*/}
@@ -374,6 +429,7 @@ export default function Tabla({
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowsCount={rows.length}
+              singleRowSelection={singleRowSelection}
             />
             {/*TABLE BODY*/}
             <TableBody>

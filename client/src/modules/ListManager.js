@@ -14,7 +14,7 @@ function deleteElement(list, ids, url) {
     ids.forEach((id) => {
       axios.delete(`${url}/${id}`).catch(console.log);
       list.splice(
-        list.findIndex((element) => element.id === id),
+        list.findIndex((element) => element._id === id),
         1
       );
     });
