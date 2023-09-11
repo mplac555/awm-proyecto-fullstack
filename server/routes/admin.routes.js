@@ -17,4 +17,7 @@ module.exports = function (app) {
 
   // Definimos una ruta DELETE '/api/admin/:id' para eliminar un administrador específico por su ID.
   app.delete("/api/admin/:id", AdminController.deleteAdmin);
+
+  // Definimos una ruta POST '/api/admin/login' para el inicio de sesión de un administrador.
+  app.post("/api/admin/login", AdminController.loginAdmin);
 };

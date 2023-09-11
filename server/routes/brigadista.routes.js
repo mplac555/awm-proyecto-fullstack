@@ -17,4 +17,7 @@ module.exports = function (app) {
 
   // Definimos una ruta DELETE '/api/admin/:id' para eliminar un administrador específico por su ID.
   app.delete("/api/brigadista/:id", BrigadistaController.deleteBrigadista);
+
+  // Definimos una ruta POST '/api/admin/login' para el inicio de sesión de un brigadista.
+  app.post("/api/brigadista/login", BrigadistaController.loginBrigadista);
 };
