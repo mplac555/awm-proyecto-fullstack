@@ -1,5 +1,7 @@
+import axios from "axios";
+
 function add(list, newElement) {
-  newElement.id = list.length + 1;
+  // newElement.id = list.length + 1;
   list.push(newElement);
 }
 
@@ -7,17 +9,22 @@ function searchElementById(list, id) {
   return list.find((element) => element.id === parseInt(id));
 }
 
-function deleteElement(list, ids) {
-  ids.forEach((id) => {
-    list.splice(
-      list.findIndex((element) => element.id === id),
-      1
-    );
-  });
+function deleteElement(list, ids, url) {
+  try {
+    ids.forEach((id) => {
+      axios.delete(`${url}/${id}`).catch(console.log);
+      list.splice(
+        list.findIndex((element) => element._id === id),
+        1
+      );
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function editElement(list, modifiedElement) {
-  list[list.findIndex((element) => element.id === modifiedElement.id)] =
+  list[list.findIndex((element) => element._id === modifiedElement._id)] =
     modifiedElement;
 }
 

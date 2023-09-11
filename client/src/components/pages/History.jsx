@@ -1,24 +1,26 @@
 // IMPORTS: dependencies
-import React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
+import axios from "axios";
 // IMPORTS: components
-import ListManager from "../../modules/ListManager";
 import ElementListPage from "../other/ElementListPage";
-import ElementMgmentPage from "../other/ElementMgmentPage";
-import axios from 'axios';
+// import ElementMgmentPage from "../other/ElementMgmentPage";
 // IMPORTS: data
-import { initialHistoryList, historyFields } from "../../data/HistoryData";
+import ListManager from "../../modules/ListManager";
+import {
+  // initialHistoryList,
+  historyFields,
+} from "../../data/HistoryData";
 
-const BASE_API_URL = 'http://localhost:8000/api';
+const BASE_API_URL = "http://localhost:8000/api";
 
 // MAIN COMPONENT
 export default function History() {
-  const [list_, _] = useState(initialHistoryList);
-  const [list, setHistoryList] = React.useState([]);
+  // const [list_, _] = useState(initialHistoryList);
+  const [list, setHistoryList] = useState([]);
 
   // Cargar la lista de autores al montar el componente
-  React.useEffect(() => {
+  useEffect(() => {
     fetchHistory();
   }, []);
 
@@ -27,24 +29,28 @@ export default function History() {
     try {
       const response = await axios.get(`${BASE_API_URL}/alertas`);
       setHistoryList(response.data);
-      console.log(response.data);
-      console.log('Atencion...');
-      console.log(historyFields);
+      // console.log(response.data);
+      // console.log("Atencion...");
+      // console.log(historyFields);
     } catch (error) {
-      console.error('Error fetching admins:', error);
+      console.error("Error fetching alerts:", error);
     }
   };
 
   // Functions to handle adding, editing and searching for events
   // to/from the list
-  function addMember(newMember) {
-    ListManager.add(list, newMember);
-  }
-  function editMember(member) {
-    ListManager.editElement(list, member);
-  }
-  function searchMember(id) {
-    return ListManager.searchElementById(list, id);
+  // function addMember(newMember) {
+  //   ListManager.add(list, newMember);
+  // }
+  // function editMember(member) {
+  //   ListManager.editElement(list, member);
+  // }
+  // function searchMember(id) {
+  //   return ListManager.searchElementById(list, id);
+  // }
+
+  function deleteHandler(list, ids) {
+    ListManager.deleteElement(list, ids, `${BASE_API_URL}/alerta`);
   }
 
   return (
@@ -53,11 +59,20 @@ export default function History() {
       <Route
         index
         element={
-          <ElementListPage list={list} fields={historyFields} dateFilter />
+          <ElementListPage
+            list={list}
+            fields={historyFields}
+            deleteHandler={deleteHandler}
+            dateFilter
+            readOnly
+          />
         }
       />
+      {/*SEE EVENT DETAILS ROUTE*/}
+      <Route path="detalles/:id" element={<div>Detalles Evento</div>} />
+
       {/*CREATE NEW EVENT ROUTE*/}
-      <Route
+      {/* <Route
         path="agregar"
         element={
           <ElementMgmentPage
@@ -66,9 +81,9 @@ export default function History() {
             classN="history"
           />
         }
-      />
+      /> */}
       {/*EDIT EVENT ROUTE*/}
-      <Route
+      {/* <Route
         path="editar/:id"
         element={
           <ElementMgmentPage
@@ -78,7 +93,7 @@ export default function History() {
             classN="history"
           />
         }
-      />
+      /> */}
     </Routes>
   );
 }

@@ -1,16 +1,15 @@
-// IMPORTS: dependencies
-import React from 'react';
+// IMPORTS:
+import React from "react";
 import { Route, Routes } from "react-router-dom";
-// IMPORTS: components
-import ListManager from "../../modules/ListManager";
+import axios from "axios";
+// IMPORTS: custom components
 import ElementListPage from "../other/ElementListPage";
-import ElementMgmentPage from "../other/ElementMgmentPage";
 import AdminForm from "../formularios/AdminForm";
-import axios from 'axios';
 // IMPORTS: data
 import { adminFields } from "../../data/AdminsData";
+import ListManager from "../../modules/ListManager";
 
-const BASE_API_URL = 'http://localhost:8000/api';
+const BASE_API_URL = "http://localhost:8000/api";
 
 // MAIN COMPONENT
 export default function Admins() {
@@ -26,24 +25,20 @@ export default function Admins() {
     try {
       const response = await axios.get(`${BASE_API_URL}/admins`);
       setAdminsList(response.data);
-      console.log(response.data);
-      console.log('Atencion...');
-      console.log(adminFields);
+      // console.log(response.data);
+      // console.log('Atencion...');
+      // console.log(adminFields);
     } catch (error) {
-      console.error('Error fetching admins:', error);
+      console.error("Error fetching admins:", error);
     }
   };
-  
-  // Functions to handle adding, editing and searching for admins
-  // to/from the list
-  function addMember(newMember) {
-    ListManager.add(list, newMember);
-  }
-  function editMember(member) {
-    ListManager.editElement(list, member);
-  }
-  function searchMember(id) {
-    return ListManager.searchElementById(list, id);
+
+  function deleteHandler(list, ids) {
+    ListManager.deleteElement(list, ids, `${BASE_API_URL}/admin`);
+    // ids.forEach((id) => {
+    //   axios.delete(`${BASE_API_URL}/admin/${id}`).catch(console.log);
+    // });
+    // fetchAdmins();
   }
 
   return (
@@ -52,30 +47,18 @@ export default function Admins() {
       <Route
         index
         element={
-          <ElementListPage list={list} fields={adminFields} name="Admin" />
-        }
-      />
-      {/*CREATE NEW ADMIN ROUTE*/}
-      <Route
-        path="agregar"
-        element={
-        <AdminForm/>
-        
-        }
-      />
-      {/*EDIT ADMIN ROUTE*/}
-      <Route
-        path="editar/:id"
-        element={
-          <ElementMgmentPage
-            handleMember={editMember}
-            findElementById={searchMember}
+          <ElementListPage
+            list={list}
             fields={adminFields}
-            name="Administrador"
-            classN="admins"
+            name="Admin"
+            deleteHandler={deleteHandler}
           />
         }
       />
+      {/*CREATE NEW ADMIN ROUTE*/}
+      <Route path="agregar" element={<AdminForm list={list} />} />
+      {/*EDIT ADMIN ROUTE*/}
+      <Route path="editar/:id" element={<AdminForm list={list} />} />
     </Routes>
   );
 }

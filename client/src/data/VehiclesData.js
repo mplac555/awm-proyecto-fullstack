@@ -3,10 +3,16 @@ export const ownerFields = [
   { id: "ownerDNI", label: "Cédula" },
 ];
 export const vehicleFields = [
-  { id: "vModel", label: "Modelo Vehículo" },
-  { id: "plateNo", label: "Nº Placa" },
-  { id: "color", label: "Color" },
+  { id: "carBrand", label: "Marca" },
+  { id: "carColor", label: "Color" },
+  { id: "carStatus", label: "Estado" },
+  { id: "carPlate", label: "Placa" },
 ];
+// export const vehicleFields = [
+//   { id: "vModel", label: "Modelo Vehículo" },
+//   { id: "plateNo", label: "Nº Placa" },
+//   { id: "color", label: "Color" },
+// ];
 
 export const initialOwnersList = [
   {

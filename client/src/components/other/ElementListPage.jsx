@@ -7,6 +7,7 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 // IMPORTS: components
 import DateTimeRangePicker from "./DateTimeRangePicker";
 import Table from "./Table";
+import axios from "axios";
 
 // MAIN COMPONENT
 export default function ElementListPage({
@@ -14,28 +15,59 @@ export default function ElementListPage({
   fields,
   searchPlaceHolder,
   name,
+  deleteHandler,
   secondaryFieldName,
   secondaryFields,
   secondaryName,
   secondaryPath,
+  baseApiUrl,
+  secondaryApiUrl,
   dateFilter,
   updateSecondary,
+  secondaryDeleteHandler,
+  readOnly,
 }) {
   const [query, setQuery] = useState("");
-  const [currentSelection, setCurrentSelection] = useState([]);
+  const [secondaryList, setSecondaryList] = useState([]);
   const [momentFiltering, setMomentFiltering] = useState(false);
+  const [currentSelectedRow, setCurrentSelectedRow] = useState("");
 
   // Second list (2-table version) handler
-  const setCurrent = (current) => {
+  const setCurrent = async (current) => {
+    // console.log("ListPage | SetCurrent | current", current);
+    if (secondaryFields) {
+      // console.log("ListPage | SetCurrent | current._id", current[0]?._id);
+      setCurrentSelectedRow(current[0]?._id);
+    }
     let secondList = [];
-    current.forEach((x) => secondList.push(...x[secondaryFieldName]));
-    setCurrentSelection(secondList);
-    updateSecondary(secondList);
+    try {
+      if (current.length > 0) {
+        const response = await axios.get(
+          `${baseApiUrl}/${current[0]?._id}/${secondaryApiUrl}`
+        );
+        secondList = response.data;
+      }
+      // console.log("ListPage | SetCurrent | AxiosResponse", secondList);
+      // current.forEach((x) => secondList.push(...x[secondaryFieldName]));
+      // console.log("ListPage | SetCurrent | forEach", secondList);
+    } catch (error) {
+      console.error("Error fetching admins:", error);
+    } finally {
+      // console.log("ListPage | SetCurrent | finally | secondList", secondList);
+      setSecondaryList(secondList);
+      updateSecondary(secondList);
+    }
   };
 
   // DateTime filtering (history version) handler
   function filterByDate(filtered, start, end) {
     setMomentFiltering(filtered && { start, end });
+  }
+
+  // console.log("ListPage | !currentSelection", !currentSelectedRow);
+
+  function secondaryDelete(list, ids) {
+    secondaryDeleteHandler(list, ids, currentSelectedRow);
   }
 
   return (
@@ -66,11 +98,14 @@ export default function ElementListPage({
           className="table"
           columns={fields}
           rows={list}
-          deleteRowHandler={ListManager.deleteElement}
+          // deleteRowHandler={ListManager.deleteElement}
+          deleteRowHandler={deleteHandler}
           name={name || "Elemento"}
           query={query}
           setCurrentSelection={secondaryFields && setCurrent}
           dateFilter={dateFilter && momentFiltering}
+          singleRowSelection={secondaryFields && true}
+          readOnly={!!readOnly}
         />
 
         {/*OPTIONAL PRIMARY TABLE (disabled by default)*/}
@@ -78,11 +113,14 @@ export default function ElementListPage({
           <Table
             className="table"
             columns={secondaryFields}
-            rows={currentSelection}
-            deleteRowHandler={ListManager.deleteElement}
+            rows={secondaryList}
+            // deleteRowHandler={ListManager.deleteElement}
+            deleteRowHandler={secondaryDelete}
             name={secondaryName || "Elemento"}
             query=""
-            path={secondaryPath}
+            // path={`${secondaryList[0]?._id}/${secondaryPath}`}
+            path={`${currentSelectedRow}/${secondaryPath}`}
+            secondaryDisabled={!currentSelectedRow}
           />
         )}
       </div>
