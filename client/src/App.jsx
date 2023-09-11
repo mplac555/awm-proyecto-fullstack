@@ -37,19 +37,19 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<MainLayout />}>
-        
         <Route index element={<HomeComponent />} />
-        <Route path="vehiculos/*" element={<VehiclesInfo />} />
+        {/* <Route path="vehiculos/*" element={<VehiclesInfo />} /> */}
+        <Route path="propietarios/*" element={<VehiclesInfo />} />
         <Route path="brigadistas/*" element={<BrigMembRoutes />} />
         <Route path="administradores/*" element={<Admins />} />
         <Route path="historial/*" element={<History />} />
       </Route>
 
       {/*Brigade pages*/}
-      <Route path="login" element={<Login/>} />
-      <Route path="/profile/:name" element={<BrigadeProfile/>}/>
-      <Route path="/profile/:name/Incident" element={<BrigadeIncident/>}/>
-      <Route path="/profile/:name/Scan" element={<BrigadeScan/>}/>
+      <Route path="login" element={<Login />} />
+      <Route path="/profile/:name" element={<BrigadeProfile />} />
+      <Route path="/profile/:name/Incident" element={<BrigadeIncident />} />
+      <Route path="/profile/:name/Scan" element={<BrigadeScan />} />
 
       <Route path="*" element={<>Error 404</>} />
     </>
