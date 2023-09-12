@@ -26,7 +26,9 @@ const OwnerForm = ({ list }) => {
     }
     setLoading(true);
     axios
-      .get(`${BASE_API_URL}/owner/${ownerID}`)
+      .get(`${BASE_API_URL}/owner/${ownerID}`, {
+        headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+      })
       .then((res) => {
         setFormData({
           id: res.data._id,
@@ -66,13 +68,19 @@ const OwnerForm = ({ list }) => {
       if (ownerID) {
         let nuevoPropietario = await axios.put(
           `${BASE_API_URL}/owner/${formData.id}`,
-          { _id: formData.id, ...formattedData }
+          { _id: formData.id, ...formattedData },
+          {
+            headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+          }
         );
         ListManager.editElement(list, nuevoPropietario.data);
       } else {
         let nuevoPropietario = await axios.post(
           `${BASE_API_URL}/owner/new`,
-          formattedData
+          formattedData,
+          {
+            headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+          }
         );
         ListManager.add(list, nuevoPropietario.data);
       }

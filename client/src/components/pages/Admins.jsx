@@ -23,7 +23,9 @@ export default function Admins() {
   // Función para obtener la lista de administradores desde el servidor
   const fetchAdmins = async () => {
     try {
-      const response = await axios.get(`${BASE_API_URL}/admins`);
+      const response = await axios.get(`${BASE_API_URL}/admins`, {
+        headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+      });
       setAdminsList(response.data);
       // console.log(response.data);
       // console.log('Atencion...');

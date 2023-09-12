@@ -30,7 +30,9 @@ const BrigadistaForm = ({ list }) => {
     }
     setLoading(true);
     axios
-      .get(`${BASE_API_URL}/brigadista/${bridID}`)
+      .get(`${BASE_API_URL}/brigadista/${bridID}`, {
+        headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+      })
       .then((res) => {
         setFormData({
           id: res.data._id,
@@ -77,13 +79,19 @@ const BrigadistaForm = ({ list }) => {
       if (bridID) {
         let nuevoBrig = await axios.put(
           `${BASE_API_URL}/brigadista/${formData.id}`,
-          { _id: formData.id, ...formattedData }
+          { _id: formData.id, ...formattedData },
+          {
+            headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+          }
         );
         ListManager.editElement(list, nuevoBrig.data);
       } else {
         let nuevoBrig = await axios.post(
           `${BASE_API_URL}/brigadista/new`,
-          formattedData
+          formattedData,
+          {
+            headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+          }
         );
         ListManager.add(list, nuevoBrig.data);
       }

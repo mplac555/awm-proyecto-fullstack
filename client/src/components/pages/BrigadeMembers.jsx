@@ -28,7 +28,9 @@ export default function BrigMembRoutes() {
   // Función para obtener la lista de administradores desde el servidor
   const fetchBrigadistas = async () => {
     try {
-      const response = await axios.get(`${BASE_API_URL}/brigadistas`);
+      const response = await axios.get(`${BASE_API_URL}/brigadistas`, {
+        headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+      });
       setBrigadistasList(response.data);
       // console.log(response.data);
       // console.log('Atencion...');

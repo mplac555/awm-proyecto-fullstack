@@ -26,6 +26,7 @@ export default function ElementListPage({
   updateSecondary,
   secondaryDeleteHandler,
   readOnly,
+  vehicleTable,
 }) {
   const [query, setQuery] = useState("");
   const [secondaryList, setSecondaryList] = useState([]);
@@ -43,7 +44,10 @@ export default function ElementListPage({
     try {
       if (current.length > 0) {
         const response = await axios.get(
-          `${baseApiUrl}/${current[0]?._id}/${secondaryApiUrl}`
+          `${baseApiUrl}/${current[0]?._id}/${secondaryApiUrl}`,
+          {
+            headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+          }
         );
         secondList = response.data;
       }
@@ -121,6 +125,7 @@ export default function ElementListPage({
             // path={`${secondaryList[0]?._id}/${secondaryPath}`}
             path={`${currentSelectedRow}/${secondaryPath}`}
             secondaryDisabled={!currentSelectedRow}
+            vehicleTable={vehicleTable}
           />
         )}
       </div>

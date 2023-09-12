@@ -1,30 +1,36 @@
 #root {
-    height: 100vh;
+  height: 100vh;
+}
+
+.App-Login {
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  gap: 40px;
+  background: linear-gradient(
+    180deg,
+    rgba(133, 255, 143, 1) 0%,
+    rgba(121, 238, 149, 1) 35%,
+    rgba(8, 87, 198, 1) 100%
+  );
+
+  padding-block: 30px;
+  flex-wrap: wrap;
+
+  & > .MuiPaper-root {
+    overflow: initial;
   }
-  
-  .App-Login {
-    height: 100%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    background: linear-gradient(
-      180deg,
-      rgba(133, 255, 143, 1) 0%,
-      rgba(121, 238, 149, 1) 35%,
-      rgba(8, 87, 198, 1) 100%
-    );
-  }
-  
-  .App-Login .MuiFilledInput-root {
-    background-color: white;
-  }
-  .App-Login .MuiFilledInput-root:hover {
-    background-color: rgba(255, 255, 255, 0.8);
-  }
-  .App-Login .MuiFilledInput-root:focus-within {
-    background-color: white;
-  }
-  
+}
+
+.App-Login .MuiFilledInput-root {
+  background-color: white;
+}
+.App-Login .MuiFilledInput-root:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+.App-Login .MuiFilledInput-root:focus-within {
+  background-color: white;
+}

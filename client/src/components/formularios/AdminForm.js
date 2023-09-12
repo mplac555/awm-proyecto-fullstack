@@ -6,10 +6,13 @@ import ListManager from "../../modules/ListManager";
 
 const BASE_API_URL = "http://localhost:8000/api";
 
-const AdminForm = ({ list }) => {
+const AdminForm = ({ list }{ list }) => {
   const navigate = useNavigate();
   const { id: adminID } = useParams();
+  const { id: adminID } = useParams();
 
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
   const [formData, setFormData] = useState({
@@ -29,7 +32,9 @@ const AdminForm = ({ list }) => {
     }
     setLoading(true);
     axios
-      .get(`${BASE_API_URL}/admin/${adminID}`)
+      .get(`${BASE_API_URL}/admin/${adminID}`, {
+        headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+      })
       .then((res) => {
         setFormData({
           id: res.data._id,
@@ -77,17 +82,37 @@ const AdminForm = ({ list }) => {
           {
             _id: formData.id,
             ...formattedData,
+          },
+          {
+            headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
           }
         );
         ListManager.editElement(list, nuevoAdmin.data);
+        let user = JSON.parse(sessionStorage?.user);
+        if (adminID === user?._id) {
+          sessionStorage.setItem(
+            "user",
+            JSON.stringify({
+              ...user,
+              adminName: formattedData.adminName,
+              adminLastname: formattedData.adminLastname,
+            })
+          );
+          navigate("/"); // Utilizamos navigate para redirigir a la interfaz principal
+        } else {
+          navigate("/administradores"); // Utilizamos navigate para redirigir a la interfaz principal
+        }
       } else {
         let nuevoAdmin = await axios.post(
           `${BASE_API_URL}/admin/new`,
-          formattedData
+          formattedData,
+          {
+            headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+          }
         );
         ListManager.add(list, nuevoAdmin.data);
+        navigate("/administradores"); // Utilizamos navigate para redirigir a la interfaz principal
       }
-      navigate("/administradores"); // Utilizamos navigate para redirigir a la interfaz principal
     } catch (error) {
       console.error("Error adding admin:", error);
     }

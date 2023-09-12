@@ -17,15 +17,33 @@ body {
 }
 
 .main-layout {
-  padding: 25px 0;
+  /* padding: 25px 0; */
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  /* gap: 25px; */
+  height: 100%;
+}
+
+.con-fondo {
+  background: linear-gradient(
+    180deg,
+    rgba(133, 255, 143, 1) 0%,
+    rgba(121, 238, 149, 1) 35%,
+    rgba(8, 87, 198, 1) 100%
+  );
+  height: 100%;
+  padding-block: auto;
+}
+
+.page-container {
+  /* width: 100%; */
+  padding-block: 25px;
 }
 
 .nav-bar {
+  min-height: 64px !important;
   width: 85%;
-  margin: auto;
+  margin-inline: auto;
   overflow-x: scroll !important;
 
   & .MuiTabs-scroller {
@@ -124,7 +142,7 @@ body {
 
 .page-main-section {
   width: 85%;
-  margin: auto;
+  margin-inline: auto;
   margin-top: 50px;
 
   .picker {
@@ -306,37 +324,53 @@ body {
   }
 }
 
-* {
+html,
+#root,
+.App {
+  overflow: hidden;
+}
+
+.App {
+  height: 100%;
+}
+
+.App * {
   animation: fadeOut 0.2s ease-in-out forwards;
 }
-*:hover {
+.App *:hover {
   animation: fadeIn 0.2s ease-in-out forwards;
 }
 
-body {
+/* body {
   overflow-y: scroll;
+  scrollbar-gutter: stable both-edges;
+} */
+
+.pagina {
+  /* overflow-y: scroll; */
+  overflow: auto;
   scrollbar-gutter: stable both-edges;
 }
 
-*::-webkit-scrollbar {
+.App *::-webkit-scrollbar {
   display: block;
   width: 16px;
   height: 16px;
 }
 
-*::-webkit-scrollbar-button {
+.App *::-webkit-scrollbar-button {
   display: none;
 }
 
-*::-webkit-scrollbar-track {
+.App *::-webkit-scrollbar-track {
   background-color: #00000000;
 }
 
-*::-webkit-scrollbar-track-piece {
+.App *::-webkit-scrollbar-track-piece {
   background-color: #00000000;
 }
 
-*::-webkit-scrollbar-thumb {
+.App *::-webkit-scrollbar-thumb {
   border: 5px solid transparent;
   border-radius: 24px;
   box-shadow: 4px 0px 0px 4px var(--scrollbar-color) inset;
