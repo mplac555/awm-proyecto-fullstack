@@ -25,6 +25,4 @@ export default function ProtectedRoutes({ role }) {
   } else {
     return auth ? <Outlet /> : <Navigate to="/login" replace />;
   }
-
-  // return <Outlet />;
 }

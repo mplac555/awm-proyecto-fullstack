@@ -7,30 +7,12 @@ import axios from "axios";
 import {
   Box,
   Button,
-  Card,
-  CardMedia,
   FormControl,
-  // IconButton,
   MenuItem,
   Select,
   TextField,
-  // Tooltip,
 } from "@mui/material";
-import {
-  // ArrowBackIosNewRounded,
-  EmailOutlined,
-  Lock,
-  Person,
-  // PersonAdd,
-} from "@mui/icons-material";
-// IMPORTS: Methods
-// import LoginMethods from "../../modules/LoginMethods";
-// IMPORTS: data
-// import {
-//   initialBrigMembersList,
-//   // brigMemberFields,
-// } from "../../data/BrigMembersData";
-// import { initialAdminsList } from "../../data/AdminsData";
+import { EmailOutlined, Lock, Person } from "@mui/icons-material";
 
 const BASE_API_URL = "http://localhost:8000/api";
 
@@ -62,10 +44,6 @@ function Login() {
   const [eLogin, setELogin] = useState(false);
   //navigate
   let navigate = useNavigate();
-  //Brigade list
-  // const [list, _] = useState(initialBrigMembersList);
-  //Admin list
-  // const [listA] = useState(initialAdminsList);
 
   //Metodo que permite verificar el rol (Admin o brigadista y verifica que nombre, correo y contraseña coincida)
   async function loginHandler(e) {
@@ -104,8 +82,6 @@ function Login() {
             sessionStorage.setItem("name", brigName);
             sessionStorage.setItem("email", brigMail);
             sessionStorage.setItem("role", "brig");
-            // navigate(`/profile/${brigName}`);
-            // navigate(`/profile/${brigName}/${brigMail}`);
             navigate("/profile");
           })
           .catch((err) => {
@@ -113,7 +89,6 @@ function Login() {
           });
         break;
       case "Administrador":
-        // console.log("rol →", rol);
         await axios
           .post(`${BASE_API_URL}/admin/login`, {
             adminName: userName,
@@ -156,16 +131,7 @@ function Login() {
   }
 
   return (
-    // <div className="pasge-container pagina con-fondo">
     <div className="App-Login pagina">
-      {/* <Card sx={{ width: 300 }}>
-        <CardMedia
-          component="img"
-          height="194"
-          // image="https://source.unsplash.com/random"
-          image={require("../../resources/images/portada.png")}
-        />
-      </Card> */}
       <img
         src={require("../../resources/images/portada.png")}
         alt=""
@@ -224,7 +190,6 @@ function Login() {
           </Box>
         ))}
 
-        {/* <Button variant="contained" onClick={startSession}> */}
         <Button variant="contained" onClick={loginHandler} type="submit">
           Iniciar Sesión
         </Button>
@@ -239,7 +204,6 @@ function Login() {
         )}
       </FormControl>
     </div>
-    // </div>
   );
 }
 

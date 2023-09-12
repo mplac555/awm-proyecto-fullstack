@@ -6,20 +6,14 @@ import axios from "axios";
 import ElementListPage from "../other/ElementListPage";
 import OwnerForm from "../formularios/OwnerForm";
 import VehicleForm from "../formularios/VehicleForm";
-// import ElementMgmentPage from "../other/ElementMgmentPage";
 // IMPORTS: data
 import ListManager from "../../modules/ListManager";
-import {
-  ownerFields,
-  // initialOwnersList,
-  vehicleFields,
-} from "../../data/VehiclesData";
+import { ownerFields, vehicleFields } from "../../data/VehiclesData";
 
 const BASE_API_URL = "http://localhost:8000/api";
 
 // MAIN COMPONENT
 export default function VehiclesInfo() {
-  //const [owners_, _] = useState(initialOwnersList);
   const [owners, setOwnersList] = useState([]);
   const [vehicles, setVehicles] = useState([]);
 
@@ -36,7 +30,6 @@ export default function VehiclesInfo() {
         headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
       });
       setOwnersList(response.data);
-      // console.log(response.data);
     } catch (error) {
       console.error("Error fetching owners:", error);
     }
@@ -53,32 +46,6 @@ export default function VehiclesInfo() {
     );
   }
 
-  // Functions to handle adding, editing and searching for owners
-  // to/from the list
-  // function addMember(newMember) {
-  //   ListManager.add(owners, newMember);
-  // }
-  // function editMember(member) {
-  //   ListManager.editElement(owners, member);
-  // }
-  // function searchMember(id) {
-  //   return ListManager.searchElementById(owners, id);
-  // }
-
-  // Functions to handle adding, editing and searching for vehicles
-  // to/from the list
-  // function addVehicle(newVehicle) {
-  //   ListManager.add(vehicles, newVehicle);
-  // }
-  // function editVehicle(vehicle) {
-  //   ListManager.editElement(vehicles, vehicle);
-  // }
-  // function searchVehicle(id) {
-  //   return ListManager.searchElementById(vehicles, id);
-  // }
-
-  // Delegate function for the child to be able to update
-  // the state of its parent (this component)
   function updateSecondary(list) {
     setVehicles(list);
   }
@@ -110,49 +77,12 @@ export default function VehiclesInfo() {
       <Route path="agregar" element={<OwnerForm list={owners} />} />
       {/*EDIT OWNER ROUTE*/}
       <Route path="editar/:id" element={<OwnerForm list={owners} />} />
-      {/* <Route
-        path="editar/:id"
-        element={
-          <ElementMgmentPage
-            handleMember={editMember}
-            findElementById={searchMember}
-            fields={ownerFields}
-            name="Propietario"
-            classN="owners"
-          />
-        }
-      /> */}
       {/*SECONDARY LIST (VEHICLES) ROUTES*/}
       <Route path=":id/vehiculo">
         {/*CREATE NEW VEHICLE ROUTE*/}
         <Route path="agregar" element={<VehicleForm list={vehicles} />} />
-        {/* <Route
-          path="agregar"
-          element={
-            <ElementMgmentPage
-              handleMember={addVehicle}
-              fields={vehicleFields}
-              name="Vehículo"
-              classN="vehicles"
-              secondary
-              />
-            }
-        /> */}
         {/*EDIT VEHICLE ROUTE*/}
         <Route path="editar/:carID" element={<VehicleForm list={vehicles} />} />
-        {/* <Route
-          path="editar/:id"
-          element={
-            <ElementMgmentPage
-              handleMember={editVehicle}
-              findElementById={searchVehicle}
-              fields={vehicleFields}
-              name="Vehículo"
-              classN="vehicles"
-              secondary
-            />
-          }
-        /> */}
       </Route>
     </Routes>
   );

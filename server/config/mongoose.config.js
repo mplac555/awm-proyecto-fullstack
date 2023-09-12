@@ -7,7 +7,7 @@ const atlasURL =
 
 // Establecemos una conexión con la base de datos MongoDB local ubicada en "mongodb://127.0.0.1:27017/Proyecto2_DB".
 mongoose
-  .connect(localURL, {
+  .connect(atlasURL, {
     useNewUrlParser: true, // Habilitamos el nuevo analizador de URL de MongoDB (necesario debido a cambios en las versiones recientes).
     useUnifiedTopology: true, // Habilitamos el nuevo motor de detección y supervisión de servidores (necesario debido a cambios en las versiones recientes).
   })

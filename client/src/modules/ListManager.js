@@ -1,7 +1,6 @@
 import axios from "axios";
 
 function add(list, newElement) {
-  // newElement.id = list.length + 1;
   list.push(newElement);
 }
 

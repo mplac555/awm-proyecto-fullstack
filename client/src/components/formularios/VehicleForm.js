@@ -6,7 +6,6 @@ import ListManager from "../../modules/ListManager";
 
 import QRCode from "qrcode.react";
 import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { toPng } from "html-to-image";
 
 const BASE_API_URL = "http://localhost:8000/api";

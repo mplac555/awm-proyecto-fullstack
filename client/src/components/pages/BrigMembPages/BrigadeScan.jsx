@@ -1,15 +1,13 @@
 import React from "react";
 import { useState } from "react";
-import { useZxing } from "react-zxing";
 import { Button } from "@mui/material";
 import { blue } from "@mui/material/colors";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CameraQr from "../../other/CameraQr";
 import axios from "axios";
 import "../../../styles/BrigadeScan_Style.css";
 
-function BrigadeScan(props) {
-  const { name, last, email } = props;
+function BrigadeScan() {
   //State
   const [conScaner, setConScaner] = useState(false);
   //Almacenar el valor de la placa
@@ -32,7 +30,6 @@ function BrigadeScan(props) {
   //Metodo para enviar un reporte positivo
   const alertPositive = () => {
     if (placa != "" && placa != "Esperando código ...") {
-      //e.preventDefault();
       //Preparacion del informe
       //Obtenemos la fecha y hora actuales en el formato ("AAAA-MM-DD") ("HH:MM:SS")
       const fechaRegistro = new Date();
@@ -58,7 +55,6 @@ function BrigadeScan(props) {
         .then((res) => {
           console.log("Alerta enviada");
           console.log(res);
-          // navigate("/profile/" + name + "/" + email);
           navigate("..");
         })
         .catch((err) => {
@@ -104,7 +100,6 @@ function BrigadeScan(props) {
             size="medium"
             color="success"
             //Se reporta que no hay ninguna novedad con el auto
-            // onClick={() => alertPositive()}
             onClick={alertPositive}
           >
             Vehiculo Verificado
@@ -115,9 +110,6 @@ function BrigadeScan(props) {
             variant="contained"
             size="medium"
             style={{ color: "white", backgroundColor: blue[500] }}
-            // onClick={() =>
-            //   navigate("/profile/" + name + "/" + email + "/incident")
-            // }
             onClick={() => navigate("../incident")}
           >
             Reportar Incidente
@@ -128,7 +120,6 @@ function BrigadeScan(props) {
             variant="contained"
             size="medium"
             color="error"
-            // onClick={() => navigate("/profile/" + name + "/" + email)}
             onClick={() => navigate("..")}
           >
             Regresar

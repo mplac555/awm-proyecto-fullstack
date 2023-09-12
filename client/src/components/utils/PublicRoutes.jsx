@@ -8,5 +8,4 @@ const useAuth = () => {
 export default function PublicRoutes() {
   const auth = useAuth();
   return !auth ? <Outlet /> : <Navigate to="/" replace />;
-  // return <Outlet />;
 }

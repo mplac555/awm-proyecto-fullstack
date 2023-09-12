@@ -91,37 +91,9 @@ module.exports.getOwnerCars = (request, response) => {
 
 // Controlador para eliminar un auto de un propietario por su ID.
 module.exports.deleteCarFromOwner = (request, response) => {
-  //   const ownerId = request.params.ownerId; // ID del propietario proporcionado en los parámetros de la URL.
-  //   const carId = request.params.carId; // ID del auto proporcionado en los parámetros de la URL.
-
   Car.findOneAndDelete({ _id: request.params.carId })
     .then((ans) => response.json(ans))
     .catch((err) => response.json(err));
-
-  //   // Buscar el propietario por su ID.
-  //   Owner.findById(ownerId)
-  //     .then((owner) => {
-  //       if (!owner) {
-  //         return response
-  //           .status(404)
-  //           .json({ message: "Propietario no encontrado" });
-  //       }
-
-  //       // Filtrar y eliminar el ID del auto de ownerCars.
-  //       owner.ownerCars = owner.ownerCars.filter(
-  //         (car) => car.toString() !== carId
-  //       );
-
-  //       // Guardar el propietario actualizado.
-  //       return owner.save();
-  //     })
-  //     .then((updatedOwner) => {
-  //       // Eliminar el auto de la colección de autos.
-  //       return Car.findByIdAndDelete(carId)
-  //         .then(() => response.json(updatedOwner)) // Devolver el propietario actualizado en formato JSON.
-  //         .catch((err) => response.status(500).json(err)); // Si ocurre un error, devolver el error en formato JSON.
-  //     })
-  //     .catch((err) => response.status(500).json(err)); // Si ocurre un error, devolver el error en formato JSON.
 };
 
 // Controlador para obtener el detalle de un vehículo en específico según su ID.

@@ -27,9 +27,6 @@ export default function Admins() {
         headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
       });
       setAdminsList(response.data);
-      // console.log(response.data);
-      // console.log('Atencion...');
-      // console.log(adminFields);
     } catch (error) {
       console.error("Error fetching admins:", error);
     }
@@ -37,10 +34,6 @@ export default function Admins() {
 
   function deleteHandler(list, ids) {
     ListManager.deleteElement(list, ids, `${BASE_API_URL}/admin`);
-    // ids.forEach((id) => {
-    //   axios.delete(`${BASE_API_URL}/admin/${id}`).catch(console.log);
-    // });
-    // fetchAdmins();
   }
 
   return (

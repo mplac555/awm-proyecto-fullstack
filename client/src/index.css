@@ -340,14 +340,7 @@ html,
 .App *:hover {
   animation: fadeIn 0.2s ease-in-out forwards;
 }
-
-/* body {
-  overflow-y: scroll;
-  scrollbar-gutter: stable both-edges;
-} */
-
-.pagina {
-  /* overflow-y: scroll; */
+¡ .pagina {
   overflow: auto;
   scrollbar-gutter: stable both-edges;
 }

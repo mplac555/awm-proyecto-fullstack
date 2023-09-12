@@ -1,7 +1,7 @@
 // IMPORTS: dependencies
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
-import { Button, createTheme } from "@mui/material";
+import { createTheme } from "@mui/material";
 // IMPORTS: components
 import NavBar from "../other/NavBar";
 
@@ -24,9 +24,6 @@ export default function MainLayout() {
       <div className="page-container pagina">
         <Outlet />
       </div>
-      {/* <Button variant="outlined" component={Link} to="/login">
-        CERRAR SESIÓN
-      </Button> */}
     </div>
   );
 }

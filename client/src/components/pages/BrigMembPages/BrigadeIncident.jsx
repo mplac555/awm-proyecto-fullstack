@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Radio,
@@ -8,16 +8,13 @@ import {
   FormControlLabel,
   FormControl,
   FormLabel,
-  Box,
   TextField,
 } from "@mui/material";
 import axios from "axios";
 
 import "../../../styles/BrigadeIncident_Style.css";
 
-function BrigadeIncident(props) {
-  const { name, last, email } = props;
-
+function BrigadeIncident() {
   //Estado para almacenar el valor de los radio Buton seleccionado
   const [typeIncident, setTypeIncident] = useState();
   //Estado para controlar cuando se tiene un reporte de tipo OTRO
@@ -47,7 +44,6 @@ function BrigadeIncident(props) {
   //Metodo para enviar un reporte al Historial
   const SendReport = (e) => {
     e.preventDefault();
-    //e.preventDefault();
     //Preparacion del informe
     //Obtenemos la fecha y hora actuales en el formato ("AAAA-MM-DD") ("HH:MM:SS")
     const fechaRegistro = new Date();
@@ -73,7 +69,6 @@ function BrigadeIncident(props) {
       .then((res) => {
         console.log("Alerta enviada");
         console.log(res);
-        // navigate("/profile/" + name + "/" + email);
         navigate("..");
       })
       .catch((err) => {
@@ -167,7 +162,6 @@ function BrigadeIncident(props) {
             variant="contained"
             size="medium"
             color="error"
-            // onClick={() => navigate("/profile/" + name + "/" + email)}
             onClick={() => navigate("..")}
           >
             Cancelar

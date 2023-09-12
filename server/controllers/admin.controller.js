@@ -8,29 +8,6 @@ const bcrypt = require("bcryptjs");
 const generateToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 
-// Controlador para crear un nuevo administrador en la base de datos.
-// module.exports.createAdmin = (request, response) => {
-//   console.log(request.body); // Imprimimos en la consola el cuerpo de la solicitud recibida (datos del nuevo administrador).
-//   const {
-//     adminName,
-//     adminLastname,
-//     adminDNI,
-//     adminMail,
-//     adminPassword,
-//     adminPhone,
-//   } = request.body; // Extraemos el adminName, adminLastname, adminDNI, adminMail, adminPassword y adminPhone del cuerpo de la solicitud.
-//   Admin.create({
-//     adminName,
-//     adminLastname,
-//     adminDNI,
-//     adminMail,
-//     adminPassword,
-//     adminPhone,
-//   })
-//     .then((user) => response.json(user)) // Si se crea correctamente, devolvemos el nuevo administrador en formato JSON como respuesta.
-//     .catch((err) => response.status(400).json(err)); // Si ocurre un error, devolvemos el error en formato JSON con un código de estado 400 (solicitud incorrecta).
-// };
-
 module.exports.createAdmin = async (request, response) => {
   const {
     adminName,

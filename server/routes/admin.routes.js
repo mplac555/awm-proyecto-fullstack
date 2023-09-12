@@ -5,8 +5,7 @@ const { protect } = require("../middleware/adminAuth.mw");
 // Exportamos una función que define las rutas de la API para interactuar con los administradores en la aplicación.
 module.exports = function (app) {
   // Definimos una ruta POST '/api/admin/new' para crear un nuevo administrador.
-  app.post("/api/admin/new", protect, AdminController.createAdmin);
-  // app.post("/api/admin/new", AdminController.createAdmin);
+  app.post("/api/admin/new", AdminController.createAdmin);
 
   // Definimos una ruta GET '/api/admins' para obtener todos los administradores.
   app.get("/api/admins", protect, AdminController.getAllAdmins);

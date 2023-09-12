@@ -1,7 +1,6 @@
 // IMPORTS: dependencies
 import { useState } from "react";
 import moment from "moment";
-import ListManager from "../../modules/ListManager";
 // IMPORTS: icon
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 // IMPORTS: components
@@ -16,8 +15,6 @@ export default function ElementListPage({
   searchPlaceHolder,
   name,
   deleteHandler,
-  secondaryFieldName,
-  secondaryFields,
   secondaryName,
   secondaryPath,
   baseApiUrl,
@@ -35,9 +32,7 @@ export default function ElementListPage({
 
   // Second list (2-table version) handler
   const setCurrent = async (current) => {
-    // console.log("ListPage | SetCurrent | current", current);
     if (secondaryFields) {
-      // console.log("ListPage | SetCurrent | current._id", current[0]?._id);
       setCurrentSelectedRow(current[0]?._id);
     }
     let secondList = [];
@@ -51,13 +46,9 @@ export default function ElementListPage({
         );
         secondList = response.data;
       }
-      // console.log("ListPage | SetCurrent | AxiosResponse", secondList);
-      // current.forEach((x) => secondList.push(...x[secondaryFieldName]));
-      // console.log("ListPage | SetCurrent | forEach", secondList);
     } catch (error) {
       console.error("Error fetching admins:", error);
     } finally {
-      // console.log("ListPage | SetCurrent | finally | secondList", secondList);
       setSecondaryList(secondList);
       updateSecondary(secondList);
     }
@@ -67,8 +58,6 @@ export default function ElementListPage({
   function filterByDate(filtered, start, end) {
     setMomentFiltering(filtered && { start, end });
   }
-
-  // console.log("ListPage | !currentSelection", !currentSelectedRow);
 
   function secondaryDelete(list, ids) {
     secondaryDeleteHandler(list, ids, currentSelectedRow);
@@ -102,7 +91,6 @@ export default function ElementListPage({
           className="table"
           columns={fields}
           rows={list}
-          // deleteRowHandler={ListManager.deleteElement}
           deleteRowHandler={deleteHandler}
           name={name || "Elemento"}
           query={query}
@@ -118,11 +106,9 @@ export default function ElementListPage({
             className="table"
             columns={secondaryFields}
             rows={secondaryList}
-            // deleteRowHandler={ListManager.deleteElement}
             deleteRowHandler={secondaryDelete}
             name={secondaryName || "Elemento"}
             query=""
-            // path={`${secondaryList[0]?._id}/${secondaryPath}`}
             path={`${currentSelectedRow}/${secondaryPath}`}
             secondaryDisabled={!currentSelectedRow}
             vehicleTable={vehicleTable}

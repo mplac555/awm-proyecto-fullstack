@@ -1,6 +1,6 @@
 //IMPORTS: dependencies
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../../styles/BrigadeProfile_Style.css";
 //IMPORTS: components
 import { blue } from "@mui/material/colors";
@@ -8,27 +8,14 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Button, CardActions } from "@mui/material";
+import { Button } from "@mui/material";
 import axios from "axios";
-
-// IMPORTS: Methods
-// import LoginMethods from "../../modules/LoginMethods";
-// IMPORTS: data
-// import {
-//   initialBrigMembersList,
-// } from "../../data/BrigMembersData";
 
 function BrigadeProfile(props) {
   //Tomo los valores del estado global
-  // const {name, email} = props;
-  // const { brigName: name, brigMail: email } = sessionStorage.getItem("user");
   const { name, email } = sessionStorage;
-  // const name = sessionStorage
   //Estado que almecena al brigadista encontrado
   const [brigade, setBrigade] = useState({});
-
-  //Lista de Brigadistas
-  // const [list, _] = useState(initialBrigMembersList);
 
   //Navigate
   let navigate = useNavigate();
@@ -121,16 +108,7 @@ function BrigadeProfile(props) {
                   variant="contained"
                   size="medium"
                   color="success"
-                  onClick={() =>
-                    // navigate(
-                    //   "/profile/" +
-                    //     brigade.brigName +
-                    //     "/" +
-                    //     brigade.brigMail +
-                    //     "/Scan"
-                    // )
-                    navigate("Scan")
-                  }
+                  onClick={() => navigate("Scan")}
                 >
                   Escanear Vehiculo
                 </Button>
@@ -140,8 +118,6 @@ function BrigadeProfile(props) {
                   variant="contained"
                   size="medium"
                   style={{ color: "white", backgroundColor: blue[500] }}
-                  // onClick={()=> navigate("/profile/"+brigadeP.name+"/Incident", {state: {keyName}})}
-                  // onClick={()=> navigate("Incident", {state: {keyName}})}
                   onClick={() => navigate("Incident")}
                 >
                   Enviar Comentarios

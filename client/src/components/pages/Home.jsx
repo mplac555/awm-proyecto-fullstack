@@ -1,5 +1,5 @@
 // IMPORTS: components
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Card from "../other/Card";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -48,7 +48,6 @@ export default function Home(props) {
   const user = JSON.parse(sessionStorage?.user);
 
   useEffect(() => {
-    // const user = JSON.parse(sessionStorage.getItem("user"));
     setData({ ...props, userName: `${user.adminName} ${user.adminLastname}` });
     setLoading(true);
     fetchData();
@@ -59,7 +58,6 @@ export default function Home(props) {
     <div className="home-page">
       <div className="user-data">
         {/*CONTACT CARD*/}
-        {/* <Card name="Jeremy" /> */}
         <Card name={user.adminName} />
 
         {/*FIELDS, PREVIOUSLY ESTABLISHED*/}
@@ -70,7 +68,6 @@ export default function Home(props) {
                 <p>
                   <strong>{pram.label}:</strong>
                 </p>
-                {/* <p>{props[pram.id]}</p> */}
                 <p>
                   {(pram.id === "membersNo" || pram.id === "adminsNo") &&
                   loading
@@ -96,13 +93,6 @@ export default function Home(props) {
           Cerrar Sesión
         </Button>
       </div>
-
-      {/* <div style={{ width: "250px" }}>
-        <Button variant="outlined" component={Link} to="/login">
-        <Button variant="outlined" onClick={handleLogout}>
-          CERRAR SESIÓN
-        </Button>
-      </div> */}
     </div>
   );
 }
