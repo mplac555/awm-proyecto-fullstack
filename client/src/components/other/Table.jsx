@@ -2,7 +2,6 @@
 import React, { useState, useMemo, useReducer } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { genreOptions } from "../../data/BrigMembersData";
-const moment = require("moment");
 // IMPORTS: components
 import {
   Box,
@@ -32,6 +31,7 @@ import {
 // IMPORTS: styles and lacale
 import { alpha, createTheme, ThemeProvider } from "@mui/material/styles";
 import { esES } from "@mui/material/locale";
+const moment = require("moment");
 
 // Ordering algorithm based on a comparator:
 // If the 'orderBy' value of 'a' is lower than the 'orderBy'

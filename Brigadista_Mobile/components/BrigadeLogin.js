@@ -14,8 +14,8 @@ import axios from "axios";
 const BrigadeLogin = ({ navigation }) => {
   //Direccion IP del servidor
   // const host = '192.168.1.48';
-  // const host = "localhost";
-  const host = "192.168.2.2";
+  const host = "localhost";
+  // const host = "192.168.2.2";
   //Estados para almacenar los valores de entrada
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -67,6 +67,7 @@ const BrigadeLogin = ({ navigation }) => {
           navigation.navigate("BrigadeProfile_Mobile", {
             userName: userName,
             email: email,
+            token: response?.data?.token,
           });
         }
       })
