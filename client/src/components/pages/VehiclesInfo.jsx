@@ -99,6 +99,7 @@ export default function VehiclesInfo() {
             updateSecondary={updateSecondary}
             baseApiUrl={`${BASE_API_URL}/owner`}
             secondaryApiUrl={"cars"}
+            vehicleTable
           />
         }
       />

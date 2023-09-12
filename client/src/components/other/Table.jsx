@@ -73,6 +73,7 @@ function TableToolbar({
   path,
   secondaryDisabled,
   readOnly,
+  vehicleTable,
 }) {
   // Buttons located at the far right of the toolbar:
   // these buttons are dynamically displayed, depending
@@ -159,7 +160,19 @@ function TableToolbar({
                 component={Link}
                 to={path ? `${path}/agregar` : "agregar"}
               >
-                <PersonAdd />
+                {/* <PersonAdd /> */}
+                {vehicleTable ? (
+                  <img
+                    src="https://img.icons8.com/?size=32&id=oIHGjapHKzm0&format=png"
+                    alt="Icono de adicionar un carro"
+                    style={{
+                      filter:
+                        "invert(47%) sepia(0%) saturate(0%) hue-rotate(193deg) brightness(97%) contrast(89%)",
+                    }}
+                  />
+                ) : (
+                  <PersonAdd />
+                )}
               </IconButton>
             </Tooltip>
           )}
@@ -240,6 +253,7 @@ export default function Tabla({
   singleRowSelection,
   secondaryDisabled,
   readOnly,
+  vehicleTable,
 }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("id");
@@ -416,6 +430,7 @@ export default function Tabla({
           path={path}
           secondaryDisabled={secondaryDisabled}
           readOnly={readOnly}
+          vehicleTable={!!vehicleTable}
         />
         <TableContainer>
           {/*ACTUAL TABLE*/}
