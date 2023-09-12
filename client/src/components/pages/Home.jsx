@@ -1,4 +1,5 @@
 // IMPORTS: components
+import { Link, useNavigate } from "react-router-dom";
 import Card from "../other/Card";
 import { Button } from "@mui/material";
 
@@ -12,6 +13,13 @@ export default function Home(props) {
     { id: "membersNo", label: "Número de Brigadistas" },
     { id: "adminsNo", label: "Número de Administradores" },
   ];
+
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    sessionStorage.clear();
+    navigate("/login");
+  }
 
   return (
     <div className="home-page">
@@ -38,8 +46,17 @@ export default function Home(props) {
       {/*BUTTONS*/}
       <div className="buttons">
         <Button variant="outlined">Editar Perfil</Button>
-        <Button variant="outlined">Cerrar Sesión</Button>
+        <Button variant="outlined" onClick={handleLogout}>
+          Cerrar Sesión
+        </Button>
       </div>
+
+      {/* <div style={{ width: "250px" }}>
+        <Button variant="outlined" component={Link} to="/login">
+        <Button variant="outlined" onClick={handleLogout}>
+          CERRAR SESIÓN
+        </Button>
+      </div> */}
     </div>
   );
 }

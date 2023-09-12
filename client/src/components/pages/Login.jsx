@@ -10,27 +10,27 @@ import {
   Card,
   CardMedia,
   FormControl,
-  IconButton,
+  // IconButton,
   MenuItem,
   Select,
   TextField,
-  Tooltip,
+  // Tooltip,
 } from "@mui/material";
 import {
-  ArrowBackIosNewRounded,
+  // ArrowBackIosNewRounded,
   EmailOutlined,
   Lock,
   Person,
-  PersonAdd,
+  // PersonAdd,
 } from "@mui/icons-material";
 // IMPORTS: Methods
-import LoginMethods from "../../modules/LoginMethods";
+// import LoginMethods from "../../modules/LoginMethods";
 // IMPORTS: data
-import {
-  initialBrigMembersList,
-  brigMemberFields,
-} from "../../data/BrigMembersData";
-import { initialAdminsList } from "../../data/AdminsData";
+// import {
+//   initialBrigMembersList,
+//   // brigMemberFields,
+// } from "../../data/BrigMembersData";
+// import { initialAdminsList } from "../../data/AdminsData";
 
 const BASE_API_URL = "http://localhost:8000/api";
 
@@ -63,93 +63,16 @@ function Login() {
   //navigate
   let navigate = useNavigate();
   //Brigade list
-  const [list, _] = useState(initialBrigMembersList);
+  // const [list, _] = useState(initialBrigMembersList);
   //Admin list
-  const [listA] = useState(initialAdminsList);
+  // const [listA] = useState(initialAdminsList);
 
   //Metodo que permite verificar el rol (Admin o brigadista y verifica que nombre, correo y contraseña coincida)
-  const startSession = () => {
-    //Admin login
-    if (rol == "Administrador") {
-      console.log("Eres un admin");
-      const atributosA = { vname: userName, vemail: email, vpassword: pass };
-      const encontradoA = LoginMethods.loginBrigade(listA, atributosA);
-      console.log(encontradoA);
-
-      if (encontradoA != null) {
-        console.log("Exitoso");
-        console.log(encontradoA);
-        navigate("/");
-      } else {
-        console.log("Error");
-        setELogin(
-          "El Correo, el Nombre del Usuario o la Contraseña son Incorrectos. Por favor Intentelo de nuevo."
-        );
-      }
-
-      //BrigadeMember login
-    } else if (rol == "Brigadista") {
-      console.log("Eres un brigadista");
-      const atributos = { vname: userName, vemail: email, vpassword: pass };
-      const encontrado = LoginMethods.loginBrigade(list, atributos);
-
-      if (encontrado != null) {
-        console.log("Exitoso");
-        console.log(encontrado);
-        navigate("/profile/" + userName);
-      } else {
-        console.log("Error");
-        setELogin(
-          "El Correo, el Nombre del Usuario o la Contraseña son Incorrectos. Por favor Intentelo de nuevo."
-        );
-      }
-    } else {
-      console.log("No ha seleccionado nada");
-      setELogin("Error al Iniciar Sesion, por favor Intentelo de nuevo.");
-    }
-  };
-
   async function loginHandler(e) {
     e.preventDefault();
-    // let res;
 
     switch (rol) {
       case "Brigadista":
-        // console.log("rol →", rol);
-        // try {
-        //   res = await axios.post(`${BASE_API_URL}/brigadista/login`, {
-        //     brigName: userName,
-        //     brigMail: email,
-        //     brigPassword: pass,
-        //   });
-        //   let {
-        //     _id,
-        //     brigName,
-        //     brigLastname,
-        //     brigDNI,
-        //     brigMail,
-        //     brigPhone,
-        //     token,
-        //   } = res.data;
-        //   sessionStorage.setItem("loginToken", token);
-        //   sessionStorage.setItem("usuario", {
-        //     _id,
-        //     brigName,
-        //     brigLastname,
-        //     brigDNI,
-        //     brigMail,
-        //     brigPhone,
-        //   });
-        //   navigate(`/profile/${brigName}`);
-        // } catch (err) {
-        //   console.log("err", err);
-        //   console.log("res", res);
-        //   setELogin(
-        //     res?.data?.message
-        //       ? res?.data?.message
-        //       : `Error en el inicio de sesión (${err})`
-        //   );
-        // }
         await axios
           .post(`${BASE_API_URL}/brigadista/login`, {
             brigName: userName,
@@ -167,7 +90,7 @@ function Login() {
               token,
             } = res.data;
             sessionStorage.setItem("loginToken", token);
-            sessionStorage.setItem("usuario", {
+            sessionStorage.setItem("user", {
               _id,
               brigName,
               brigLastname,
@@ -175,17 +98,11 @@ function Login() {
               brigMail,
               brigPhone,
             });
-            navigate(`/profile/${brigName}`);
+            // navigate(`/profile/${brigName}`);
+            navigate(`/profile/${brigName}/${brigMail}`);
           })
           .catch((err) => {
-            // console.log("err", err);
-            // console.log("res", res);
             setELogin(err);
-            // setELogin(
-            //   res?.data?.message
-            //     ? res?.data?.message
-            //     : `Error en el inicio de sesión (${err})`
-            // );
           });
         break;
       case "Administrador":
@@ -207,7 +124,7 @@ function Login() {
               token,
             } = res.data;
             sessionStorage.setItem("loginToken", token);
-            sessionStorage.setItem("usuario", {
+            sessionStorage.setItem("user", {
               _id,
               adminName,
               adminLastname,
@@ -219,11 +136,6 @@ function Login() {
           })
           .catch((err) => {
             setELogin(err);
-            // setELogin(
-            //   res.data?.message
-            //     ? res.data.message
-            //     : "Error desconocido en el inicio de sesión..."
-            // );
           });
         break;
       default:
@@ -233,7 +145,8 @@ function Login() {
   }
 
   return (
-    <div className="App-Login">
+    // <div className="pasge-container pagina con-fondo">
+    <div className="App-Login pagina">
       <Card sx={{ width: 300 }}>
         <CardMedia
           component="img"
@@ -308,6 +221,7 @@ function Login() {
         )}
       </FormControl>
     </div>
+    // </div>
   );
 }
 

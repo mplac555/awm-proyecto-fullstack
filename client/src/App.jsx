@@ -19,6 +19,8 @@ import Login from "./components/pages/Login";
 import BrigadeProfile from "./components/pages/BrigadeProfile";
 import BrigadeIncident from "./components/pages/BrigadeIncident";
 import BrigadeScan from "./components/pages/BrigadeScan";
+import ProtectedRoutes from "./components/utils/ProtectedRoutes";
+import PublicRoutes from "./components/utils/PublicRoutes";
 
 // "Home" Component, isolated for enhanced code reading
 function HomeComponent() {
@@ -36,21 +38,29 @@ function HomeComponent() {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<HomeComponent />} />
-        {/* <Route path="vehiculos/*" element={<VehiclesInfo />} /> */}
-        <Route path="propietarios/*" element={<VehiclesInfo />} />
-        <Route path="brigadistas/*" element={<BrigMembRoutes />} />
-        <Route path="administradores/*" element={<Admins />} />
-        <Route path="historial/*" element={<History />} />
+      {/*Admin Routes*/}
+      <Route path="/" element={<ProtectedRoutes />}>
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<HomeComponent />} />
+          {/* <Route path="vehiculos/*" element={<VehiclesInfo />} /> */}
+          <Route path="propietarios/*" element={<VehiclesInfo />} />
+          <Route path="brigadistas/*" element={<BrigMembRoutes />} />
+          <Route path="administradores/*" element={<Admins />} />
+          <Route path="historial/*" element={<History />} />
+        </Route>
       </Route>
 
-      {/*Brigade pages*/}
-      <Route path="login" element={<Login />} />
-      <Route path="/profile/:name" element={<BrigadeProfile />} />
-      <Route path="/profile/:name/Incident" element={<BrigadeIncident />} />
-      <Route path="/profile/:name/Scan" element={<BrigadeScan />} />
+      {/*Brigade Members pages*/}
+      <Route path="/profile/:name">
+        <Route index element={<BrigadeProfile />} />
+        <Route path="Incident" element={<BrigadeIncident />} />
+        <Route path="Scan" element={<BrigadeScan />} />
+      </Route>
 
+      {/*Public Routes*/}
+      <Route path="login" element={<PublicRoutes />}>
+        <Route index element={<Login />} />
+      </Route>
       <Route path="*" element={<>Error 404</>} />
     </>
   )
