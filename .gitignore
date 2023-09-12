@@ -1,3 +1,37 @@
 node_modules
 /client/node_modules
 .env
+
+# dependencies
+Brigadista_Mobile/node_modules/
+
+# Expo
+Brigadista_Mobile/.expo/
+Brigadista_Mobile/dist/
+Brigadista_Mobile/web-build/
+
+# Native
+Brigadista_Mobile/*.orig.*
+Brigadista_Mobile/*.jks
+Brigadista_Mobile/*.p8
+Brigadista_Mobile/*.p12
+Brigadista_Mobile/*.key
+Brigadista_Mobile/*.mobileprovision
+
+# Metro
+Brigadista_Mobile/.metro-health-check*
+
+# debug
+Brigadista_Mobile/npm-debug.*
+Brigadista_Mobile/yarn-debug.*
+Brigadista_Mobile/yarn-error.*
+
+# macOS
+Brigadista_Mobile/.DS_Store
+Brigadista_Mobile/*.pem
+
+# local env files
+Brigadista_Mobile/.env*.local
+
+# typescript
+Brigadista_Mobile/*.tsbuildinfo
