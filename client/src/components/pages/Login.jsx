@@ -199,6 +199,7 @@ function Login() {
             <TextField
               id={campo.id}
               required
+              type={campo.id === "password" ? "password" : "text"}
               label={campo.label}
               variant="filled"
               sx={{ width: "100%" }}

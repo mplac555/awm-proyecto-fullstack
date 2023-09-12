@@ -29,7 +29,9 @@ const AdminForm = ({ list }) => {
     }
     setLoading(true);
     axios
-      .get(`${BASE_API_URL}/admin/${adminID}`)
+      .get(`${BASE_API_URL}/admin/${adminID}`, {
+        headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+      })
       .then((res) => {
         setFormData({
           id: res.data._id,
@@ -77,17 +79,37 @@ const AdminForm = ({ list }) => {
           {
             _id: formData.id,
             ...formattedData,
+          },
+          {
+            headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
           }
         );
         ListManager.editElement(list, nuevoAdmin.data);
+        let user = JSON.parse(sessionStorage?.user);
+        if (adminID === user?._id) {
+          sessionStorage.setItem(
+            "user",
+            JSON.stringify({
+              ...user,
+              adminName: formattedData.adminName,
+              adminLastname: formattedData.adminLastname,
+            })
+          );
+          navigate("/"); // Utilizamos navigate para redirigir a la interfaz principal
+        } else {
+          navigate("/administradores"); // Utilizamos navigate para redirigir a la interfaz principal
+        }
       } else {
         let nuevoAdmin = await axios.post(
           `${BASE_API_URL}/admin/new`,
-          formattedData
+          formattedData,
+          {
+            headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+          }
         );
         ListManager.add(list, nuevoAdmin.data);
+        navigate("/administradores"); // Utilizamos navigate para redirigir a la interfaz principal
       }
-      navigate("/administradores"); // Utilizamos navigate para redirigir a la interfaz principal
     } catch (error) {
       console.error("Error adding admin:", error);
     }
@@ -273,7 +295,14 @@ const AdminForm = ({ list }) => {
           <Button
             variant="contained"
             color="secondary"
-            onClick={() => navigate("/administradores")}
+            onClick={() =>
+              // navigate(
+              //   adminID && adminID === JSON.parse(sessionStorage?.user?._id)
+              //     ? "/"
+              //     : "/administradores"
+              // )
+              navigate("/administradores")
+            }
           >
             Cancelar
           </Button>

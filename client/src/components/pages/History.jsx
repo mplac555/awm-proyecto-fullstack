@@ -27,7 +27,9 @@ export default function History() {
   // Función para obtener la lista de administradores desde el servidor
   const fetchHistory = async () => {
     try {
-      const response = await axios.get(`${BASE_API_URL}/alertas`);
+      const response = await axios.get(`${BASE_API_URL}/alertas`, {
+        headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+      });
       setHistoryList(response.data);
       // console.log(response.data);
       // console.log("Atencion...");

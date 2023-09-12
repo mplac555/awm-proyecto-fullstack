@@ -10,15 +10,19 @@ import {
 import MainLayout from "./components/layouts/MainLayout";
 
 // IMPORTS: Pages
+import Login from "./components/pages/Login";
+// Admin
 import Home from "./components/pages/Home";
 import VehiclesInfo from "./components/pages/VehiclesInfo";
 import BrigMembRoutes from "./components/pages/BrigadeMembers";
 import Admins from "./components/pages/Admins";
 import History from "./components/pages/History";
-import Login from "./components/pages/Login";
+// Brig
 import BrigadeProfile from "./components/pages/BrigMembPages/BrigadeProfile";
 import BrigadeIncident from "./components/pages/BrigMembPages/BrigadeIncident";
 import BrigadeScan from "./components/pages/BrigMembPages/BrigadeScan";
+
+// IMPORTS: Utils
 import ProtectedRoutes from "./components/utils/ProtectedRoutes";
 import PublicRoutes from "./components/utils/PublicRoutes";
 

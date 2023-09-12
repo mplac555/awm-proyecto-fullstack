@@ -59,15 +59,17 @@ function BrigadeIncident(props) {
     const registro = {
       alertaDate: fechaA,
       alertaHour: horaA,
-      brigName: name,
-      brigLastname: last,
+      brigName: JSON.parse(sessionStorage.user)?.brigName,
+      brigLastname: JSON.parse(sessionStorage.user)?.brigLastname,
       carPlate: nplaca,
       alertaIncident: typeIncident + " " + OtherText,
       alertaDescription: description,
     };
 
     axios
-      .post("http://localhost:8000/api/alerta/new", registro)
+      .post("http://localhost:8000/api/alerta/new", registro, {
+        headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+      })
       .then((res) => {
         console.log("Alerta enviada");
         console.log(res);

@@ -31,7 +31,10 @@ export default function VehiclesInfo() {
   // Función para obtener la lista de propietarios desde el servidor
   const fetchOwners = async () => {
     try {
-      const response = await axios.get(`${BASE_API_URL}/owners`);
+      console.log(sessionStorage?.token);
+      const response = await axios.get(`${BASE_API_URL}/owners`, {
+        headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+      });
       setOwnersList(response.data);
       // console.log(response.data);
     } catch (error) {

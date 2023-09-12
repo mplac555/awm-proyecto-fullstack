@@ -35,7 +35,9 @@ function BrigadeProfile(props) {
   //Use effect para encontrar por el nombre y el email
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/brigadista/" + name + "/" + email)
+      .get("http://localhost:8000/api/brigadista/" + name + "/" + email, {
+        headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+      })
       .then((res) => {
         setBrigade(res.data);
       })

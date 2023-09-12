@@ -12,7 +12,11 @@ function searchElementById(list, id) {
 function deleteElement(list, ids, url) {
   try {
     ids.forEach((id) => {
-      axios.delete(`${url}/${id}`).catch(console.log);
+      axios
+        .delete(`${url}/${id}`, {
+          headers: { authorization: `Bearer ${sessionStorage?.loginToken}` },
+        })
+        .catch(console.log);
       list.splice(
         list.findIndex((element) => element._id === id),
         1
