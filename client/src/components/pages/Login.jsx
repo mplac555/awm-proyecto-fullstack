@@ -90,16 +90,23 @@ function Login() {
               token,
             } = res.data;
             sessionStorage.setItem("loginToken", token);
-            sessionStorage.setItem("user", {
-              _id,
-              brigName,
-              brigLastname,
-              brigDNI,
-              brigMail,
-              brigPhone,
-            });
+            sessionStorage.setItem(
+              "user",
+              JSON.stringify({
+                _id,
+                brigName,
+                brigLastname,
+                brigDNI,
+                brigMail,
+                brigPhone,
+              })
+            );
+            sessionStorage.setItem("name", brigName);
+            sessionStorage.setItem("email", brigMail);
+            sessionStorage.setItem("role", "brig");
             // navigate(`/profile/${brigName}`);
-            navigate(`/profile/${brigName}/${brigMail}`);
+            // navigate(`/profile/${brigName}/${brigMail}`);
+            navigate("/profile");
           })
           .catch((err) => {
             setELogin(err);
@@ -124,14 +131,18 @@ function Login() {
               token,
             } = res.data;
             sessionStorage.setItem("loginToken", token);
-            sessionStorage.setItem("user", {
-              _id,
-              adminName,
-              adminLastname,
-              adminDNI,
-              adminMail,
-              adminPhone,
-            });
+            sessionStorage.setItem(
+              "user",
+              JSON.stringify({
+                _id,
+                adminName,
+                adminLastname,
+                adminDNI,
+                adminMail,
+                adminPhone,
+              })
+            );
+            sessionStorage.setItem("role", "admin");
             navigate("/");
           })
           .catch((err) => {
@@ -147,13 +158,19 @@ function Login() {
   return (
     // <div className="pasge-container pagina con-fondo">
     <div className="App-Login pagina">
-      <Card sx={{ width: 300 }}>
+      {/* <Card sx={{ width: 300 }}>
         <CardMedia
           component="img"
           height="194"
-          image="https://source.unsplash.com/random"
+          // image="https://source.unsplash.com/random"
+          image={require("../../resources/images/portada.png")}
         />
-      </Card>
+      </Card> */}
+      <img
+        src={require("../../resources/images/portada.png")}
+        alt=""
+        style={{ height: "300px" }}
+      />
       <FormControl
         sx={{
           width: 255,

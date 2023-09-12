@@ -1,0 +1,140 @@
+import React from "react";
+import { useState } from "react";
+import { useZxing } from "react-zxing";
+import { Button } from "@mui/material";
+import { blue } from "@mui/material/colors";
+import { useNavigate, useLocation } from "react-router-dom";
+import CameraQr from "../../other/CameraQr";
+import axios from "axios";
+import "../../../styles/BrigadeScan_Style.css";
+
+function BrigadeScan(props) {
+  const { name, last, email } = props;
+  //State
+  const [conScaner, setConScaner] = useState(false);
+  //Almacenar el valor de la placa
+  const [placa, setPlaca] = useState("");
+
+  //Navigate
+  let navigate = useNavigate();
+
+  //Metodos
+  const ControlScanner = () => {
+    if (conScaner == true) {
+      setConScaner(false);
+      console.log(conScaner);
+    } else {
+      setConScaner(true);
+      console.log(conScaner);
+    }
+  };
+
+  //Metodo para enviar un reporte positivo
+  const alertPositive = () => {
+    if (placa != "" && placa != "Esperando código ...") {
+      //e.preventDefault();
+      //Preparacion del informe
+      //Obtenemos la fecha y hora actuales en el formato ("AAAA-MM-DD") ("HH:MM:SS")
+      const fechaRegistro = new Date();
+      const fechaA = fechaRegistro.toISOString().split("T")[0];
+      const horaA = fechaRegistro.toTimeString().split(" ")[0];
+      console.log(fechaA);
+      console.log(horaA);
+      //Mensaje predeterminado
+      const registro = {
+        alertaDate: fechaA,
+        alertaHour: horaA,
+        brigName: name,
+        brigLastname: last,
+        carPlate: placa,
+        alertaIncident: "Verificado",
+        alertaDescription: "Sin Novedad",
+      };
+
+      axios
+        .post("http://localhost:8000/api/alerta/new", registro)
+        .then((res) => {
+          console.log("Alerta enviada");
+          console.log(res);
+          // navigate("/profile/" + name + "/" + email);
+          navigate("..");
+        })
+        .catch((err) => {
+          console.log("Reporte rechazado");
+          console.log(err);
+        });
+    } else {
+      console.log("Error falta placa");
+    }
+  };
+
+  return (
+    <div className="main">
+      <h1>Lector de Código QR</h1>
+      {/*QR Camera*/}
+      {conScaner == false ? (
+        <div className=".qr_camera">
+          <img src="https://img.freepik.com/vector-premium/car-guard-green-shield-logo-seguro-colision-automoviles-o-tienda-tienda-insignia-servicio-ajuste-vehiculos-o_502272-1242.jpg"></img>
+        </div>
+      ) : (
+        <div className="contS">
+          <CameraQr setplaca={setPlaca}></CameraQr>
+        </div>
+      )}
+
+      <div className="controls">
+        <div className="contS">
+          <Button
+            variant="contained"
+            size="medium"
+            style={{ color: "white", backgroundColor: blue[500] }}
+            onClick={ControlScanner}
+          >
+            Escanear
+          </Button>
+        </div>
+      </div>
+
+      <div className="controlsS">
+        <div className="contS">
+          <Button
+            variant="contained"
+            size="medium"
+            color="success"
+            //Se reporta que no hay ninguna novedad con el auto
+            // onClick={() => alertPositive()}
+            onClick={alertPositive}
+          >
+            Vehiculo Verificado
+          </Button>
+        </div>
+        <div className="contS">
+          <Button
+            variant="contained"
+            size="medium"
+            style={{ color: "white", backgroundColor: blue[500] }}
+            // onClick={() =>
+            //   navigate("/profile/" + name + "/" + email + "/incident")
+            // }
+            onClick={() => navigate("../incident")}
+          >
+            Reportar Incidente
+          </Button>
+        </div>
+        <div className="contS">
+          <Button
+            variant="contained"
+            size="medium"
+            color="error"
+            // onClick={() => navigate("/profile/" + name + "/" + email)}
+            onClick={() => navigate("..")}
+          >
+            Regresar
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default BrigadeScan;

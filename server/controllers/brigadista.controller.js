@@ -143,3 +143,12 @@ module.exports.updateBrigadista = (request, response) => {
     .then((brigadista) => response.json(brigadista))
     .catch((err) => response.json(err));
 };
+
+//Controlador para obtener un brigadista en base a su nombre y correo
+module.exports.getBrigadistaProfile = (request, response) => {
+  const brigName = request.params.name;
+  const brigMail = request.params.email;
+  Brigadista.findOne({ brigName: brigName, brigMail: brigMail })
+    .then((brigadista) => response.json(brigadista)) // Devolvemos el administrador encontrado en formato JSON como respuesta.
+    .catch((err) => response.json(err)); // Si ocurre un error, devolvemos el error en formato JSON.
+};

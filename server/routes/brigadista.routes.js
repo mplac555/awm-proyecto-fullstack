@@ -20,4 +20,10 @@ module.exports = function (app) {
 
   // Definimos una ruta POST '/api/admin/login' para el inicio de sesión de un brigadista.
   app.post("/api/brigadista/login", BrigadistaController.loginBrigadista);
+
+  //Definimos una ruta GET para otorgar los detalles al perfil
+  app.get(
+    "/api/brigadista/:name/:email",
+    BrigadistaController.getBrigadistaProfile
+  );
 };
